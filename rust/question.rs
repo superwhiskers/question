@@ -1,66 +1,40 @@
-use std::io;
-use std::mem;
-use std::io::{Write};
+use std::{io, time, thread};
+use std::io::Write;
 
-// implementation of the question function in rust
-fn question(prompt: &str, valid: &[&str]) -> &'static str {
+fn question(prompt: &str, valid: &Option<&[&str]>) -> String {
+	loop {
+		print!("{}", prompt);
 
-    loop {
+		if valid.is_some() {
+			print!(" ({}): ", valid.as_ref().unwrap().join(", "));
+		} else {
+			print!(": ");
+		}
 
-        let mut input = String::new();
+		io::stdout().flush().expect("Failed to flush stdout!");
 
-        println!("{}", prompt);
-        if valid.len() != 0 {
+		let mut response = String::new();
 
-            print!("({}): ", valid.join(", "));
+		io::stdin().read_line(&mut response).expect("Failed to read from stdin!");
 
-        } else {
+		response = String::from(response.trim());
 
-            print!(": ")
-
-        }
-
-        let _ = io::stdout().flush();
-        io::stdin().read_line(&mut input)
-            .expect("[err]: failed to read input...");
-        input.pop();
-
-        if valid.len() == 0 {
-
-            return string_to_static_str(input);
-
-        }
-
-        for ele in valid.iter() {
-
-            if ele.to_string() == input {
-
-                    return string_to_static_str(input);
-
-            }
-
-        }
-
-        println!("\"{}\" is not a valid answer", input)
-
-    }
-
-}
-
-fn string_to_static_str(s: String) -> &'static str {
-
-    unsafe {
-    
-        let ret = mem::transmute(&s as &str);
-        mem::forget(s);
-        ret
-        
-    }
-    
+		if valid.is_some() {
+			if valid.as_ref().unwrap().contains(&response.as_str()) {
+				return response
+			} else {
+				println!("\"{}\" is not a valid answer!", response)
+			}
+		} else if response.trim() == "" {
+			println!("Your answer cannot be blank!");
+		} else {
+			return response;
+		}
+	}
 }
 
 fn main()  {
 
-	question("foo", &["bar", "baz"])
+	question("foo", &Some(&["bar", "baz"]));
 	
 }
