@@ -1,4 +1,4 @@
-use std::{io, time, thread};
+use std::io;
 use std::io::Write;
 
 fn question(prompt: &str, valid: &Option<&[&str]>) -> String {
