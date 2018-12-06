@@ -20,9 +20,10 @@ fn question(prompt: &str, valid: &[&str]) -> &'static str {
 
         }
 
-        let _ = io::stdout().flush();
+        io::stdout().flush()
+	    .expect("failed to flush stdout");
         io::stdin().read_line(&mut input)
-            .expect("[err]: failed to read input...");
+            .expect("failed to read stdin");
         input.pop();
 
         if valid.len() == 0 {
@@ -61,6 +62,6 @@ fn string_to_static_str(s: String) -> &'static str {
 
 fn main()  {
 
-	question("foo", &["bar", "baz"])
+  let _ = question("foo", &["bar", "baz"]);
 	
 }
