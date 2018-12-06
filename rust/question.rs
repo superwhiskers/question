@@ -25,7 +25,7 @@ fn question(prompt: &str, valid: &Option<&[&str]>) -> String {
 			} else {
 				println!("\"{}\" is not a valid answer!", response)
 			}
-		} else if response.trim() == "" {
+		} else if response == "" {
 			println!("Your answer cannot be blank!");
 		} else {
 			return response;
