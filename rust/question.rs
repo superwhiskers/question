@@ -62,6 +62,6 @@ fn string_to_static_str(s: String) -> &'static str {
 
 fn main()  {
 
-  let _ = question("foo", &["bar", "baz"]);
+  question("foo", &["bar", "baz"]);
 	
 }
