@@ -1,4 +1,4 @@
-# an implementation of the question function in python
+# implementation of the question function in python
 def question(prompt, valid):
 	while True:
 		inp = ''
@@ -16,6 +16,6 @@ def question(prompt, valid):
 			if ele == inp:
 				return inp
 		
-		print(f'{inp} is not a valid answer')
+		print(f'"{inp}" is not a valid answer')
 		
 question('foo', ['bar', 'baz'])
