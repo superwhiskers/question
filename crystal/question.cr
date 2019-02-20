@@ -4,7 +4,7 @@ def question(prompt : String, valid : Array)
   while true
 
     puts(prompt)
-    if valid.size() != 0
+    if valid.size != 0
 
       print("(#{valid.join(", ")}): ")
       
@@ -16,7 +16,7 @@ def question(prompt : String, valid : Array)
 
     inp = STDIN.gets()
 
-    if valid.size() == 0
+    if valid.size == 0
 
       return inp
 
