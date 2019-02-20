@@ -1,43 +1,30 @@
 # implementation of the question function in crystal
-def question(prompt : String, valid : Array)
-  
+def question(prompt : String, accepts : Array)
+
   while true
 
     puts(prompt)
-    if valid.size != 0
 
-      print("(#{valid.join(", ")}): ")
-      
+    print("(#{accepts.join(", ")}): ") if accepts.size != 0
+
+    print(": ")
+
+    input = STDIN.gets
+    
+    if accepts.empty?
+
+      return input
+    
     else
 
-      print(": ")
-      
-    end
-
-    inp = STDIN.gets()
-
-    if valid.size == 0
-
-      return inp
-
-    end
-
-    i = 0
-    while i < valid.size()
-
-      if valid[i] == inp
-
-        return inp
-
-      end
-      i += 1
-
-    end
-
-    puts("\"#{inp}\" is not a valid answer")
+      return input if accepts.includes? input
     
+    end
+
+    puts %("#{input}" is not a valid answer)  
+
   end
-  
+
 end
 
-question("foo", ["bar", "baz"])
+question "foo", ["bar", "baz"]
