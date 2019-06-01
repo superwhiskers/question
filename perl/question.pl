@@ -16,9 +16,7 @@ sub question {
 	chomp($input = <STDIN>);
 
 	if (scalar(@valid) == 0) {
-
 	    return $input;
-
 	}
 
 	foreach (@valid) {
