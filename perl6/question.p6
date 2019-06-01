@@ -4,6 +4,7 @@ sub question(Str $prompt, @valid --> Str) {
     my Str $input;
 
     loop {
+	say($prompt);
 	if (@valid.elems != 0) {
 	    $input = prompt(sprintf("(%s): ", join(", ", @valid)));
 	} else {

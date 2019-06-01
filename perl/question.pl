@@ -7,6 +7,7 @@ sub question {
     my $input;
 
     for(;;) {
+	say($prompt);
 	if (scalar(@valid) != 0) {
 	    printf("(%s): ", join(", ", @valid));
 	} else {
