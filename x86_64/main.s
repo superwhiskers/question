@@ -6,18 +6,21 @@ BITS 64
 section .data
 	%include "data.s"
 
+section .bss
+	%include "bss.s"
+
 section .text
 	%include "syscalls.s"
 	%include "utilities.s"
 
 global _start
 _start:
-	sys_write 1, hello, 13
+	util_alloc 13           ; allocate enough space to store message
+	mov qword [addr], rax   ; place address into variable
+	mov qword [rax], hello  ; place message into allocated memory
+	sys_write 1, [addr], 13 ; output message
 
-	util_alloc 1        ; test: allocate a single byte
-	sys_write 1, rax, 8 ; output address
-
-	mov rax, 60 ; exit()
-	mov rdi, 0  ; code: 0
+	mov rax, 60  ; exit()
+	mov rdi, 0   ; code: 0
 	syscall      ; call
 

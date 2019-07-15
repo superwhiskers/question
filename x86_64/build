@@ -1,4 +1,0 @@
-#!/bin/sh
-
-nasm -f elf64 main.s -o main.o
-ld main.o -o main
