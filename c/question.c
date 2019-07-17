@@ -2,100 +2,75 @@
 #include <stdlib.h>
 #include <string.h>
 
-// initial character array size 
+// initial character array size
 size_t INITIAL_ARRAY_SIZE = 2000;
 
 // simple join-string-by-delimiter utility function in c
-char* join(char **sarr, int sarr_count, char *delim) {
+char *join(char **sarr, int sarr_count, char *delim) {
+	// allocate initial memory buffer so it can be freed
+	char *result = malloc(1);
+	char *result_tmp;
+	size_t delimsize = sizeof(delim);
 
-  char *result = "";
-  char *result_tmp = "";
-  size_t delimsize = sizeof(delim);
+	for (int i = 0; i < sarr_count; i++) {
+		result_tmp = result;
+		if (i == sarr_count - 1) {
+			result = malloc(sizeof(result_tmp) + sizeof(sarr[i]));
+			strcpy(result, result_tmp);
+			strcat(result, sarr[i]);
 
-  for (int i = 0; i < sarr_count; i++) {
+		} else {
+			result = malloc(sizeof(result_tmp) + sizeof(sarr[i]) +
+					delimsize);
+			strcpy(result, result_tmp);
+			strcat(result, sarr[i]);
+			strcat(result, delim);
+		}
 
-    result_tmp = malloc(sizeof(result));
-    strcpy(result_tmp, result);
-    
-    if (i == sarr_count-1) {
+		free(result_tmp);
+	}
 
-      result = malloc(sizeof(result) + sizeof(sarr[i]));
-      strcpy(result, result_tmp);
-      strcat(result, sarr[i]);
-
-    } else {
-
-      result = malloc(sizeof(result) + sizeof(sarr[i]) + delimsize);
-      strcpy(result, result_tmp);
-      strcat(result, sarr[i]);
-      strcat(result, delim);
-      
-    }
-
-    free(result_tmp);
-
-  }
-
-  return result;
-
+	return result;
 }
 
 // implementation of the question function in c
-char* question(char *prompt, char **valid, int valid_count) {
+char *question(char *prompt, char **valid, int valid_count) {
+	char *input = malloc(INITIAL_ARRAY_SIZE * sizeof(char));
+	size_t read = 0;
+	char *joined_valid;
+	if (valid_count != 0) {
+		joined_valid = join(valid, valid_count, ", ");
+	}
 
-  char *input = malloc(INITIAL_ARRAY_SIZE * sizeof(char)); 
-  ssize_t read = 0;
-  char *joined_valid;
-  if (valid_count != 0) {
+	for (;;) {
+		printf("%s\n", prompt);
+		if (valid_count != 0) {
+			printf("(%s): ", joined_valid);
 
-    joined_valid = join(valid, valid_count, ", ");
+		} else {
+			printf(": ");
+		}
+		read = getline(&input, &INITIAL_ARRAY_SIZE, stdin);
+		input[read - 1] = '\0';
 
-  }
- 
-  for (;;) {
+		if (read == 0) {
+			break;
+		}
 
-    printf("%s\n", prompt);
-    if (valid_count != 0) {
+		for (int i = 0; i < valid_count; i++) {
+			if (strcmp(valid[i], input) == 0) {
+				break;
+			}
+		}
 
-      printf("(%s): ", joined_valid);
+		printf("\"%s\" is not a valid answer\n", input);
+	}
 
-    } else {
-
-      printf(": ");
-
-    }
-    read = getline(&input, &INITIAL_ARRAY_SIZE, stdin);
-    input[read-1] = '\0';
-
-    if (read == 0) {
-
-      return input;
-
-    }
-
-    for (int i = 0; i < valid_count; i++) {
-
-      if (strcmp(valid[i], input) == 0) {
-
-        return input;
-
-      }
-
-    }
-
-    printf("\"%s\" is not a valid answer\n", input);
-
-  }
-
-  free(input);
-  free(&read);
-  free(joined_valid);
-
+	free(joined_valid);
+	return input;
 }
 
 int main() {
-
-  question("foo", (char*[]){"bar", "baz"}, 2);
-  return 0;
-
+	free(question("foo", (char *[]){ "bar", "baz" }, 2));
+	return 0;
 }
