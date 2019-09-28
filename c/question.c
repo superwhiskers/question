@@ -51,6 +51,12 @@ char *question(char *prompt, char **valid, int valid_count) {
 			printf(": ");
 		}
 		read = getline(&input, &INITIAL_ARRAY_SIZE, stdin);
+		
+		if (read == EOF) {
+			putchar('\n');
+			break;
+		}
+		
 		input[read - 1] = '\0';
 
 		if (read == 0) {
