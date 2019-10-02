@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use v5.10;
 
+# implementation of the question function in perl
 sub question {
     my ($prompt, @valid) = @_;
     my $input;

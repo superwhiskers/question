@@ -1,5 +1,6 @@
 use v6;
 
+# implementation of the question function in perl6
 sub question(Str $prompt, @valid --> Str) {
     my Str $input;
 

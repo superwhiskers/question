@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// original implementation of the question function
+// implementation of the question function in go
 func question(prompt string, valid []string) string {
 
 	var inp string

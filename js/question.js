@@ -1,5 +1,6 @@
 const readline = require('readline')
 
+// implementation of the question function in crystal
 function question(prompt, valid) {
 	let rl
   let final_answer

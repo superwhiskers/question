@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 class Program {
+    // implementation of the question function in c#
     public static string Question(string prompt, List<string> valid = null) {
 	string r;
 	while (true) {

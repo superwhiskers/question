@@ -5,6 +5,7 @@
 #include <iterator>
 #include <algorithm>
 
+// implementation of the question function in c++
 std::string question(std::string prompt, std::vector<std::string> valid) {
 	std::string inp, q;
 	if (!valid.empty()) {
