@@ -1,10 +1,10 @@
 package main
 
 import (
-	"strings"
-	"fmt"
 	"bufio"
+	"fmt"
 	"os"
+	"strings"
 )
 
 // original implementation of the question function
@@ -54,5 +54,5 @@ func question(prompt string, valid []string) string {
 func main() {
 
 	question("foo", []string{"bar", "baz"})
-	
+
 }

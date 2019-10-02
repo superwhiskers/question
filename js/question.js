@@ -1,23 +1,35 @@
 const readline = require('readline')
 
 function question(prompt, valid) {
-	const rl = readline.createInterface({
-		input: process.stdin,
-		output: process.stdout,
-		prompt: `${prompt}\n(${valid.join(', ')}): `
-	})
+	let rl
+  let final_answer
+  if (valid.length === 0) {
+    rl = readline.createInterface({
+		  input: process.stdin,
+		  output: process.stdout,
+		  prompt: `${prompt}\n: `
+	  })
+  } else {
+    rl = readline.createInterface({
+		  input: process.stdin,
+		  output: process.stdout,
+		  prompt: `${prompt}\n(${valid.join(', ')}): `
+	  })
+  }
 
 	rl.on('line', answer => {
-		if (!valid.includes(answer)) {
-			console.log(`"${answer}" is not a valid answer`)
-			rl.prompt()
-		}
-		else {
+	  if (valid.length == 0 || valid.includes(answer)) {
 			rl.close()
+      final_answer = answer
+      return
 		}
+
+    console.log(`"${answer}" is not a valid answer`)
+    rl.prompt()
 	})
 
 	rl.prompt()
+  return final_answer
 }
 
-question('foo', ['baz', 'bar'])
+question('foo', ['bar', 'baz'])
