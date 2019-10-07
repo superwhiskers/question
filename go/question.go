@@ -1,13 +1,13 @@
 package main
 
 import (
-	"strings"
-	"fmt"
 	"bufio"
+	"fmt"
 	"os"
+	"strings"
 )
 
-// original implementation of the question function
+// implementation of the question function in go
 func question(prompt string, valid []string) string {
 
 	var inp string
@@ -54,5 +54,5 @@ func question(prompt string, valid []string) string {
 func main() {
 
 	question("foo", []string{"bar", "baz"})
-	
+
 }

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# implementation of the question function in bash
 function question() {
 	valid=(${2//,\ / })
 	

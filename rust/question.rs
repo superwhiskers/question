@@ -1,67 +1,38 @@
 use std::io;
-use std::mem;
-use std::io::{Write};
+use std::io::Write;
 
 // implementation of the question function in rust
-fn question(prompt: &str, valid: &[&str]) -> &'static str {
+fn question(prompt: &str, valid: Option<&[&str]>) -> String {
+    let mut input = String::new();
 
     loop {
-
-        let mut input = String::new();
-
         println!("{}", prompt);
-        if valid.len() != 0 {
-
+        if let Some(valid) = valid {
             print!("({}): ", valid.join(", "));
-
         } else {
-
             print!(": ")
-
         }
 
-        io::stdout().flush()
-	    .expect("failed to flush stdout");
-        io::stdin().read_line(&mut input)
+        io::stdout().flush().expect("failed to flush stdout");
+        io::stdin()
+            .read_line(&mut input)
             .expect("failed to read stdin");
         input.pop();
 
-        if valid.len() == 0 {
-
-            return string_to_static_str(input);
-
+        if valid.is_none() {
+            return input;
         }
 
-        for ele in valid.iter() {
-
+        for ele in valid.unwrap().iter() {
             if ele.to_string() == input {
-
-                    return string_to_static_str(input);
-
+                return input;
             }
-
         }
 
         println!("\"{}\" is not a valid answer", input)
-
     }
-
 }
 
-fn string_to_static_str(s: String) -> &'static str {
-
-    unsafe {
-    
-        let ret = mem::transmute(&s as &str);
-        mem::forget(s);
-        ret
-        
-    }
-    
-}
-
-fn main()  {
-
-  question("foo", &["bar", "baz"]);
-	
+fn main() {
+    question("foo", Some(&["bar", "baz"]));
 }

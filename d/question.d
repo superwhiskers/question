@@ -1,5 +1,6 @@
 import std.stdio, std.array;
 
+// implementation of the question function in d
 string question(string prompt, string[] valid) {
 
   string inp;
