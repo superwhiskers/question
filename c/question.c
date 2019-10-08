@@ -64,6 +64,7 @@ char *question(char *prompt, char **valid, int valid_count) {
 		}
 
 		for (int i = 0; i < valid_count; i++) {
+			printf("%s", valid[i]);
 			if (strcmp(valid[i], input) == 0) {
 				break;
 			}
