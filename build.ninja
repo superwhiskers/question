@@ -1,0 +1,47 @@
+# handwritten because I like pain
+
+root = .
+bin = bin
+builddir = $bin
+cc = gcc
+cxx = g++
+d = ldc2
+
+rule zig
+  command = cd zig && zig build && cp question ../bin/zig/ && cd ..
+
+rule c
+  command = $cc c/question.c -o $bin/c/question
+
+rule go
+  command = go build -o $out go/question.go
+
+rule crystal
+  command = crystal build -o $out crystal/question.cr
+
+rule rust
+  command = rustc -o $out rust/question.rs
+
+rule cpp
+  command = $cxx -o $out cpp/main.cpp
+
+rule d
+  command = $d d/question.d -L="-o$bin/d/question"
+
+# TODO fix asm files to actually build
+rule asm_obj
+  command = $extras nasm -f elf64 $in -o $root/$out
+
+rule asm_main
+  command = cd $root/x86_64 && nasm -f elf64 main.s -o ../$out
+
+rule asm_bin
+  command = ld -o $out $bin/x86_64/question.o
+
+build $bin/zig/question: zig
+build $bin/c/question: c 
+build $bin/go/question: go
+build $bin/crystal/question: crystal
+build $bin/rust/question: rust
+build $bin/cpp/question: cpp
+build $bin/d/question: d
