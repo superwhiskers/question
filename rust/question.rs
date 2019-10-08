@@ -3,9 +3,9 @@ use std::io::Write;
 
 // implementation of the question function in rust
 fn question(prompt: &str, valid: Option<&[&str]>) -> String {
-    let mut input = String::new();
 
     loop {
+        let mut input = String::new();
         println!("{}", prompt);
         if let Some(valid) = valid {
             print!("({}): ", valid.join(", "));
