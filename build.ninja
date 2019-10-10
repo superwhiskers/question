@@ -8,7 +8,7 @@ cxx = g++
 d = ldc2
 
 rule zig
-  command = cd zig && zig build && cp question ../bin/zig/ && cd ..
+  command = zig build-exe $in --name $out
 
 rule c
   command = $cc c/question.c -o $bin/c/question
@@ -41,7 +41,7 @@ rule asm_main
 rule asm_bin
   command = ld -o $out $bin/x86_64/question.o
 
-build $bin/zig/question: zig
+build $bin/zig/question: zig zig/question.zig
 build $bin/c/question: c 
 build $bin/go/question: go
 build $bin/crystal/question: crystal

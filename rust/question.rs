@@ -3,9 +3,8 @@ use std::io::Write;
 
 // implementation of the question function in rust
 fn question(prompt: &str, valid: Option<&[&str]>) -> String {
-
+    let mut input = String::new();
     loop {
-        let mut input = String::new();
         println!("{}", prompt);
         if let Some(valid) = valid {
             print!("({}): ", valid.join(", "));
@@ -29,7 +28,8 @@ fn question(prompt: &str, valid: Option<&[&str]>) -> String {
             }
         }
 
-        println!("\"{}\" is not a valid answer", input)
+        println!("\"{}\" is not a valid answer", input);
+        input = "".to_string();
     }
 }
 
