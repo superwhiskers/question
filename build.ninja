@@ -8,7 +8,7 @@ cxx = g++
 d = ldc2
 
 rule zig
-  command = cd zig && zig build && cp question ../bin/zig/ && cd ..
+  command = zig build-exe $in --name $out
 
 rule c
   command = $cc c/question.c -o $bin/c/question
@@ -28,6 +28,9 @@ rule cpp
 rule d
   command = $d d/question.d -L="-o$bin/d/question"
 
+rule java
+  command = javac -d $out $in
+
 # TODO fix asm files to actually build
 rule asm_obj
   command = $extras nasm -f elf64 $in -o $root/$out
@@ -38,10 +41,11 @@ rule asm_main
 rule asm_bin
   command = ld -o $out $bin/x86_64/question.o
 
-build $bin/zig/question: zig
+build $bin/zig/question: zig zig/question.zig
 build $bin/c/question: c 
 build $bin/go/question: go
 build $bin/crystal/question: crystal
 build $bin/rust/question: rust
 build $bin/cpp/question: cpp
 build $bin/d/question: d
+build $bin/java: java java/question.java
