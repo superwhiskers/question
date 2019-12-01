@@ -6,6 +6,8 @@
 size_t INITIAL_ARRAY_SIZE = 2000;
 
 // simple join-string-by-delimiter utility function in c
+// the use of strcpy and strcat is safe here because the destination buffer is guaranteed to be big
+// enough for the string to fit in.
 char *join(char **sarr, int sarr_count, char *delim) {
 	// allocate initial memory buffer so it can be freed
 	char *result = malloc(1);
@@ -51,12 +53,12 @@ char *question(char *prompt, char **valid, int valid_count) {
 			printf(": ");
 		}
 		read = getline(&input, &INITIAL_ARRAY_SIZE, stdin);
-		
+
 		if (read == EOF) {
 			putchar('\n');
 			break;
 		}
-		
+
 		input[read - 1] = '\0';
 
 		if (read == 0) {
@@ -64,15 +66,16 @@ char *question(char *prompt, char **valid, int valid_count) {
 		}
 
 		for (int i = 0; i < valid_count; i++) {
-			printf("%s", valid[i]);
 			if (strcmp(valid[i], input) == 0) {
-				break;
+				goto _question_end;
 			}
 		}
 
 		printf("\"%s\" is not a valid answer\n", input);
 	}
 
+// don't shame me for using goto here. this is the only valid use case for it
+_question_end:
 	free(joined_valid);
 	return input;
 }
