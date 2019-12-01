@@ -4,13 +4,17 @@ use std::io::Write;
 // implementation of the question function in rust
 fn question(prompt: &str, valid: Option<&[&str]>) -> String {
     let mut input = String::new();
+    let mut joined_valid: String = "".into();
+    if let Some(valid) = valid {
+        joined_valid = valid.join(", ");
+    }
+
     loop {
         println!("{}", prompt);
-        if let Some(valid) = valid {
-            print!("({}): ", valid.join(", "));
-        } else {
-            print!(": ")
+        if valid.is_some() {
+            print!("({})", &joined_valid);
         }
+        print!(": ");
 
         io::stdout().flush().expect("failed to flush stdout");
         io::stdin()

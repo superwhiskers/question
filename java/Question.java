@@ -1,23 +1,26 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class question {
+public class Question {
 	public static void main(String[] args) {
-		Question q = new Question();
-		String s = q.ask("Enter something", new String[]{"yes", "no"});
-		System.out.println(s);
+		Question.question("foo", new String[]{"bar", "baz"});
 	}
-}
-
-class Question {
-	String ask(String prompt, String[] valid) {
+	public static String question(String prompt, String[] valid) {
 		BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
 
-		System.out.printf("%s (%s): ", prompt, String.join(", ", valid));
+		String joined = String.join(", ", valid);
+		String inp = "";
+
 		while (true) {
-			String inp = "";
-			try {inp = buf.readLine();} 
-			catch(Exception e) { 
+			System.out.println(prompt);
+			if (valid.length != 0) {
+				System.out.printf("(%s)", joined);
+			}
+			System.out.printf(": ");
+
+			try {
+				inp = buf.readLine();
+			} catch(Exception e) { 
 				System.out.println(e);
 				System.exit(1);
 			}
@@ -27,7 +30,7 @@ class Question {
 			}
 
 			for (String s : valid) {
-				if (s.equals(inp)) { // assuming that equals() was overriden
+				if (s.equals(inp)) {
 					return s;
     				}
 			}
@@ -35,3 +38,4 @@ class Question {
 		}
 	}
 }
+

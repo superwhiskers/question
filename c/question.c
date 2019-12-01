@@ -47,11 +47,10 @@ char *question(char *prompt, char **valid, int valid_count) {
 	for (;;) {
 		printf("%s\n", prompt);
 		if (valid_count != 0) {
-			printf("(%s): ", joined_valid);
-
-		} else {
-			printf(": ");
+			printf("(%s)", joined_valid);
 		}
+		printf(": ");
+
 		read = getline(&input, &INITIAL_ARRAY_SIZE, stdin);
 
 		if (read == EOF) {

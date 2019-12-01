@@ -6,14 +6,14 @@ use v5.10;
 sub question {
     my ($prompt, @valid) = @_;
     my $input;
+    my $joined_valid = join(", ", @valid);
 
     for(;;) {
 	say($prompt);
 	if (scalar(@valid) != 0) {
-	    printf("(%s): ", join(", ", @valid));
-	} else {
-	    print(": ");
-	}
+	    printf("(%s)", joined_valid);
+        }
+	print(": ");
 
 	chomp($input = <STDIN>);
 

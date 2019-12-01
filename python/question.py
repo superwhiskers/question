@@ -1,7 +1,7 @@
 # implementation of the question function in python
 def question(prompt, valid):
+        inp = ''
 	while True:
-		inp = ''
 	
 		print(prompt)
 		if len(valid) != 0:
