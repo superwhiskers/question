@@ -21,4 +21,4 @@
             (question prompt valid))
           validation-result)))))
 
-(question "foo" ["bar" "baz"])
+(print (question "foo" ["bar" "baz"]))

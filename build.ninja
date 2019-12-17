@@ -3,8 +3,8 @@
 root = .
 bin = bin
 builddir = $bin
-cc = gcc
-cxx = g++
+cc = clang 
+cxx = clang++
 d = ldc2
 
 rule zig
@@ -48,4 +48,4 @@ build $bin/crystal/question: crystal
 build $bin/rust/question: rust
 build $bin/cpp/question: cpp
 build $bin/d/question: d
-build $bin/java: java java/question.java
+build $bin/java: java java/Question.java
