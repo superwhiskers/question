@@ -34,13 +34,6 @@ fn question(prompt: []const u8, valid: [][]const u8) anyerror![]u8 {
 }
 
 pub fn main() anyerror!void {
-    const prompt = "enter something";
-    var valid = [][]const u8{"yes", "no", "maybe", "so"};
-
-    const res = try question("Enter something", valid[0..]);
-    std.debug.warn("{}\n", res);
-
-    var nvalid = [][]const u8{};
-    const nres = try question("Enter whatever you want", nvalid[0..]);
-    std.debug.warn("{}\n", nres);
+    var valid = [][]const u8{"bar", "baz"};
+    const _ = try question("foo", valid[0..]);
 }
