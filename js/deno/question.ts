@@ -11,7 +11,7 @@ async function question(prompt: string, valid: string[]) {
   displayPrompt();
   for await (const input of readLines(Deno.stdin)) {
     if (valid.length === 0 || valid.includes(input.trim())) {
-      return input;
+      return input.trim();
     } else {
       console.log(`"${input.trim()}" is not a valid answer`);
       displayPrompt();
