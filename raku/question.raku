@@ -8,7 +8,7 @@ sub question(Str $prompt, @valid --> Str) {
     loop {
 	say($prompt);
 	if (@valid.elems != 0) {
-	    $input = printf("(%s)", joined_valid);
+	    printf("(%s)", $joined_valid);
 	}
 	$input = prompt(": ");
 
