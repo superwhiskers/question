@@ -23,7 +23,30 @@ fn strcat(dst: &char, src: &char) {
     dst[offset+i] = 0;
 }
 
-// WARNING!!! STUPID
+fn strcmp(s1: &char, s2: &char) -> num {
+	let i = 0;
+	let flag = 0;
+	let loop = true;
+	while flag == 0 && loop {
+		if s1[i] > s2[i] {
+			flag = 1;
+		}
+		
+		if s1[i] < s2[i] {
+			flag = -1;
+		}
+
+		if s1[i] == '\0' {
+			loop = false;
+		}
+	
+		i = i + 1;
+	}
+
+	return flag;
+}
+
+// WARNING!!! FUCKING STUPID
 fn sizeof(s: &char) -> num {
 	return strlen(s) + 1;
 }
@@ -43,7 +66,7 @@ fn join(sarr: &&char, sarr_count: num, delim: &char) -> &char {
 
 	for (let i = 0; i < sarr_count; i = i + 1) {
 		result_tmp = result;
-		if (i == sarr_count - 1) {
+		if i == sarr_count - 1 {
 			result = alloc(sizeof(result_tmp) + sizeof(sarr[i]));
 			strcpy(result, result_tmp);
 			strcat(result, sarr[i]);
@@ -64,7 +87,7 @@ fn join(sarr: &&char, sarr_count: num, delim: &char) -> &char {
 fn question(prompt: &char, valid: &&char, valid_count: num) -> &char {
 	let size = 256;
 	let joined_valid: &char = alloc(0);
-	if (valid_count != 0) {
+	if valid_count != 0 {
 		joined_valid = join(valid, valid_count, ", ");
 	}
 	let result = "";
@@ -72,7 +95,7 @@ fn question(prompt: &char, valid: &&char, valid_count: num) -> &char {
 
 	while (loop) {
 		putstrln(prompt);
-		if (valid_count != 0) {
+		if valid_count != 0 {
 			putstr("("); putstr(joined_valid); putstr(")");
 		}
 		putstr(": ");
@@ -83,19 +106,23 @@ fn question(prompt: &char, valid: &&char, valid_count: num) -> &char {
 		
 		s[read] = '\0';
 
-		if (read == 0) {
+		if read == 0 {
 			putstr("\n");
 		}
 
 		for (let i = 0; i < valid_count; i = i + 1) {
-			if (valid[i] == s) {
-				free joined_valid: size;
+			if strcmp(valid[i], s) == 0 {
+				//free joined_valid: size;
 				strcpy(result, s);
+
+				// We have to do this because oak doesn't allow returns in conditionals
 				loop = false;
 			}
 		}
 
-		putstr("\""); putstr(s); putstrln("\" is not a valid answer.");
+		if loop {
+			putstr("\""); putstr(s); putstrln("\" is not a valid answer.");
+		}
 	}
 
 	return result;
@@ -106,6 +133,7 @@ fn main() {
 	let size = 2;
 
 	let valid = alloc(size) as &&char;
+	valid[0] = "Bar"; valid[1] = "Baz";
 
 	putstrln(question("Foo", valid, size));
 
