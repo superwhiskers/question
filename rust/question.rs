@@ -1,6 +1,6 @@
 use std::io::{self, Write};
 
-fn question<'a>(prompt: &str, valid: Option<&[&'a str]>) -> io::Result<&'a str> {
+fn question(prompt: &str, valid: Option<&[&str]>) -> io::Result<String> {
     let mut input = String::new();
 
     loop {
@@ -15,8 +15,8 @@ fn question<'a>(prompt: &str, valid: Option<&[&'a str]>) -> io::Result<&'a str> 
 
         let trimmed = input.trim();
 
-        if let Some(value) = valid.unwrap_or_default().iter().find(|&&v| v == trimmed) {
-            return Ok(value);
+        if valid.is_none() || valid.unwrap_or_default().iter().find(|&&v| v == trimmed).is_some() {
+            return Ok(trimmed.to_string());
         } else {
             println!("\"{}\" is not a valid answer", trimmed);
             input.clear();
