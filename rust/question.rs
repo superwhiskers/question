@@ -1,42 +1,29 @@
-use std::io;
-use std::io::Write;
+use std::io::{self, Write};
 
-// implementation of the question function in rust
-fn question(prompt: &str, valid: Option<&[&str]>) -> String {
+fn question<'a>(prompt: &str, valid: Option<&[&'a str]>) -> io::Result<&'a str> {
     let mut input = String::new();
-    let mut joined_valid: String = "".into();
-    if let Some(valid) = valid {
-        joined_valid = valid.join(", ");
-    }
 
     loop {
         println!("{}", prompt);
         if valid.is_some() {
-            print!("({})", &joined_valid);
+            print!("({})", &valid.unwrap_or_default().join(","));
         }
         print!(": ");
 
-        io::stdout().flush().expect("failed to flush stdout");
-        io::stdin()
-            .read_line(&mut input)
-            .expect("failed to read stdin");
-        input.pop();
+        io::stdout().flush()?;
+        io::stdin().read_line(&mut input)?;
 
-        if valid.is_none() {
-            return input;
+        let trimmed = input.trim();
+
+        if let Some(value) = valid.unwrap_or_default().iter().find(|&&v| v == trimmed) {
+            return Ok(value);
+        } else {
+            println!("\"{}\" is not a valid answer", trimmed);
+            input.clear();
         }
-
-        for ele in valid.unwrap().iter() {
-            if ele.to_string() == input {
-                return input;
-            }
-        }
-
-        println!("\"{}\" is not a valid answer", input);
-        input = "".to_string();
     }
 }
 
 fn main() {
-    question("foo", Some(&["bar", "baz"]));
+    question("foo", Some(&["bar", "baz"])).unwrap();
 }
