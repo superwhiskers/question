@@ -1,0 +1,140 @@
+#[std]
+#[heap(2048)]
+
+// A ton of utility functions because the oak std has nothing in it
+fn strcpy(dst: &char, src: &char) {
+    for (let i=0; src[i] != '\0'; i=i+1) {
+        dst[i] = src[i];
+    }
+    dst[i] = 0;
+}
+
+
+fn strlen(str: &char) -> num {
+    for (let i=0; str[i] != '\0'; i=i+1) {}
+    return i;
+}
+
+fn strcat(dst: &char, src: &char) {
+    let offset: num = strlen(dst);
+    for (let i=0; src[i] != '\0'; i=i+1) {
+        dst[offset+i] = src[i];
+    }
+    dst[offset+i] = 0;
+}
+
+fn strcmp(s1: &char, s2: &char) -> num {
+	let i = 0;
+	let flag = 0;
+	let loop = true;
+	while flag == 0 && loop {
+		if s1[i] > s2[i] {
+			flag = 1;
+		}
+		
+		if s1[i] < s2[i] {
+			flag = -1;
+		}
+
+		if s1[i] == '\0' {
+			loop = false;
+		}
+	
+		i = i + 1;
+	}
+
+	return flag;
+}
+
+// WARNING!!! FUCKING STUPID
+fn sizeof(s: &char) -> num {
+	return strlen(s) + 1;
+}
+
+fn input(buffer: &char) -> num {
+	let i = 0;
+	for (let ch = get_char(); ch != '\n'; ch = get_char()) {
+		buffer[i] = ch;
+		i = i + 1;
+	}
+	return i;
+}
+
+fn join(sarr: &&char, sarr_count: num, delim: &char) -> &char {
+	let result = alloc(1) as &char;
+	let result_tmp: &char = alloc(0) as &char;
+
+	for (let i = 0; i < sarr_count; i = i + 1) {
+		result_tmp = result;
+		if i == sarr_count - 1 {
+			result = alloc(sizeof(result_tmp) + sizeof(sarr[i]));
+			strcpy(result, result_tmp);
+			strcat(result, sarr[i]);
+		} else {
+			let n = sizeof(result_tmp) + sizeof(sarr[i]);
+			result = alloc(n + sizeof(delim));
+			strcpy(result, result_tmp);
+			strcat(result, sarr[i]);
+			strcat(result, delim);
+		}
+		
+		free result_tmp: 1;
+	}
+
+	return result;
+}
+
+fn question(prompt: &char, valid: &&char, valid_count: num) -> &char {
+	let size = 256;
+	let joined_valid: &char = alloc(0);
+	if valid_count != 0 {
+		joined_valid = join(valid, valid_count, ", ");
+	}
+	let result = "";
+	let loop = true;
+
+	while (loop) {
+		putstrln(prompt);
+		if valid_count != 0 {
+			putstr("("); putstr(joined_valid); putstr(")");
+		}
+		putstr(": ");
+
+		
+		let s = alloc(size) as &char;
+		let read = input(s);
+		
+		s[read] = '\0';
+
+		if read == 0 {
+			putstr("\n");
+		}
+
+		for (let i = 0; i < valid_count; i = i + 1) {
+			if strcmp(valid[i], s) == 0 {
+				//free joined_valid: size;
+				strcpy(result, s);
+
+				// We have to do this because oak doesn't allow returns in conditionals
+				loop = false;
+			}
+		}
+
+		if loop {
+			putstr("\""); putstr(s); putstrln("\" is not a valid answer.");
+		}
+	}
+
+	return result;
+
+}
+
+fn main() {
+	let size = 2;
+
+	let valid = alloc(size) as &&char;
+	valid[0] = "Bar"; valid[1] = "Baz";
+
+	putstrln(question("Foo", valid, size));
+
+}
