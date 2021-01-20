@@ -2,13 +2,13 @@ use strict;
 use warnings;
 use v5.10;
 
-# implementation of the question function in perl
+# Implementation of the question function in Perl
 sub question {
     my ($prompt, @valid) = @_;
     my $input;
     my $joined_valid = join(", ", @valid);
 
-    for(;;) {
+    for (;;) {
 	say($prompt);
 	if (scalar(@valid) != 0) {
 	    printf("(%s)", joined_valid);
