@@ -2,40 +2,40 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Question {
-	public static void main(String[] args) {
-		Question.question("foo", new String[]{"bar", "baz"});
-	}
-	public static String question(String prompt, String[] valid) {
-		BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) {
+        Question.question("foo", new String[]{"bar", "baz"});
+    }
 
-		String joined = String.join(", ", valid);
-		String inp = "";
+    public static String question(String prompt, String[] valid) {
+        BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
 
-		while (true) {
-			System.out.println(prompt);
-			if (valid.length != 0) {
-				System.out.printf("(%s)", joined);
-			}
-			System.out.printf(": ");
+        String joined = String.join(", ", valid);
+        String inp = "";
 
-			try {
-				inp = buf.readLine();
-			} catch(Exception e) { 
-				System.out.println(e);
-				System.exit(1);
-			}
+        while (true) {
+            System.out.println(prompt);
+            if (valid.length != 0) {
+                System.out.printf("(%s)", joined);
+            }
+            System.out.printf(": ");
 
-			if (valid.length == 0) {
-				return inp;
-			}
+            try {
+                inp = buf.readLine();
+            } catch(Exception e) { 
+                System.out.println(e);
+                System.exit(1);
+            }
 
-			for (String s : valid) {
-				if (s.equals(inp)) {
-					return s;
-    				}
-			}
-			System.out.printf("\"%s\" is not a valid answer\n", inp);
-		}
-	}
+            if (valid.length == 0) {
+                return inp;
+            }
+
+            for (String s : valid) {
+                if (s.equals(inp)) {
+                    return s;
+                    }
+            }
+            System.out.printf("\"%s\" is not a valid answer\n", inp);
+        }
+    }
 }
-
