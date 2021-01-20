@@ -1,6 +1,6 @@
 # Implementation of the question function in Ruby
-def question(prompt, valid)
-  while true
+def question prompt, valid
+  loop do
     puts prompt
     print "(#{valid.join ", "})" if valid.size != 0
     print ": "
@@ -14,4 +14,4 @@ def question(prompt, valid)
   end
 end
 
-question "foo", ["bar", "baz"]
+question "foo", %w(bar baz)
