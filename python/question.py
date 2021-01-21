@@ -1,4 +1,4 @@
-# Implementation of the question function in Python
+# implementation of the question function in Python
 def question(prompt, valid):
     inp = ""
     while True:

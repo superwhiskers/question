@@ -1,4 +1,4 @@
-# Implementation of the question function in Ruby
+# implementation of the question function in Ruby
 def question prompt, valid
   loop do
     puts prompt
