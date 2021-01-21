@@ -1,28 +1,17 @@
-# implementation of the question function in ruby
-def question(prompt, valid)
-
-  while true
-
-    puts  prompt
-    print "(#{valid.join(", ")})" if valid.size != 0
+# implementation of the question function in Ruby
+def question prompt, valid
+  loop do
+    puts prompt
+    print "(#{valid.join ", "})" if valid.size != 0
     print ": "
+    input = gets.chomp
 
-    input = STDIN.gets.chomp
-    
-    if valid.empty?
-
+    if valid.empty? || valid.include?(input)
       return input
-    
     else
-
-      return input if valid.include? input
-    
+      puts %("#{input}" is not a valid answer)
     end
-
-    puts %("#{input}" is not a valid answer)  
-
   end
-
 end
 
-question("foo", ["bar", "baz"])
+question "foo", %w(bar baz)
