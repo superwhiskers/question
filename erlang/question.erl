@@ -1,6 +1,10 @@
 -module(question).
--export([main/1, question/2]).
+-export([main/1, question/1, question/2]).
 
+question(Prompt) ->
+    io:format("~s~n: ", [Prompt]),
+    Line = io:get_line(""),
+    string:strip(string:strip(Line, both, 13), both, 10).
 question(Prompt, Valid) ->
     io:format("~s~n(~s): ", [Prompt, lists:join(", ", Valid)]),
     Line = io:get_line(""),
@@ -12,5 +16,7 @@ question(Prompt, Valid) ->
     end.
 
 main(_) -> 
-    Result = question("Foo", ["Bar", "Baz"]),
-    io:format("~s~n", [Result]).
+    A = question("Foo", ["Bar", "Baz"]),
+    io:format("~s~n", [A]),
+    B = question("Foo"),
+    io:format("~s~n", [B]).
