@@ -1,0 +1,37 @@
+// dyon doesn't have find
+fn find(arr: [any], cb: \(any) -> 'return any) -> opt[any] {
+  found := any i { \cb(arr[i]) }
+  if found {
+    return some(arr[why(found)])
+  } else {
+    return none()
+  }
+}
+
+// question implementation in dyon
+fn question(prompt: str, valid: 'return [str]) -> str {
+  if len(valid) != 0 {
+    // dyon has no join
+    joined_valid := "("
+    for i len(valid)-1 { joined_valid += valid[i] + ", " }
+    joined_valid += valid[len(valid)-1] + ")"
+
+    print(prompt + "\n" + joined_valid + ": ")
+    input := trim(read_line())
+    return unwrap_or(find(valid, \(x) = x == grab input), {
+      println("\"" + input + "\" is not a valid response.")
+      question(prompt, valid)
+    })
+  } else {
+    print(prompt + ": ")
+    return trim(read_line())
+  }
+}
+
+fn main() {
+  // value must be variable to have lifetime
+  valid := ["bar", "baz"]
+  
+  // value must be used or discarded
+  _ := question("foo", valid)
+}
