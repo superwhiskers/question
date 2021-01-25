@@ -1,3 +1,4 @@
+# implementation of the question function in julia
 function question(prompt::AbstractString, valid::AbstractVector{<:AbstractString})
     loopprompt = isempty(valid) ? "" : '(' * join(valid, ", ") * ')'
     while true
