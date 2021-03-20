@@ -1,4 +1,4 @@
-import { readLines } from "https://deno.land/std@v0.41.0/io/bufio.ts";
+import { readLines } from "https://deno.land/std@0.90.0/io/mod.ts";
 
 const writeLine = (...str: string[]) =>
   Deno.stdout.write(new TextEncoder().encode(str.join("")));
