@@ -1,0 +1,47 @@
+use std
+use bio
+
+/* an implementation of the question in myrddin (https://myrlang.org) */
+const question = { prompt : byte[:], valid : byte[:][:]
+	var inp
+	var in
+	var joined_valid = std.strjoin(valid, ", ")
+
+	match bio.open("/dev/stdin", bio.Rd) 
+	| `std.Ok bio: in = bio
+	| `std.Err e: std.fatal("Unable to open stdin: {}\n", e)
+	;;
+
+	while true 
+		std.put("{}\n", prompt)
+		
+		if valid.len != 0
+			std.put("({}) ", joined_valid)
+		;;
+		std.put(": ")
+
+		match bio.readln(in)
+		| `std.Err e: std.fatal("error reading line: {}\n", e)
+		| `std.Ok ln: inp = ln
+		;;
+
+		if valid.len == 0
+			-> inp
+		;;
+
+		/* check if inp is in valid */
+		for ele : valid
+			if std.sleq(ele, inp) 
+				-> inp
+			;;
+		;;
+
+		std.put("\"{}\" is not a valid answer\n", inp)
+	;;
+
+	std.die("unreachable")
+}
+
+const main = {
+	question("Foo", ["Bar", "Baz"][:])
+}
