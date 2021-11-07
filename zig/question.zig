@@ -41,7 +41,7 @@ pub fn main() !void {
     const arena = &arena_instance.allocator;
 
     // 512 should be plenty
-    // TODO: change the way the alloator works to not need set alloc amounts.
+    // TODO: change the way the allocator works to not need set alloc amounts.
     _ = try question(512, "foo", &[_][]const u8{ "bar", "baz" }, arena);
     _ = try question(512, "foo", &[_][]const u8{}, arena);
 }
