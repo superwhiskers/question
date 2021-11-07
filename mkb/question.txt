@@ -1,0 +1,27 @@
+$${
+@&result=" "
+
+&prompt = $$[1]
+&valid  = $$[2]
+
+// TODO: possibly remove this at some point, it's possible to pass lists, but it's not really any better than not in this language lol
+&valid[] = split(",",%&valid%)
+
+if(&valid = "")
+  @&result = prompt(,"$$?", "%&prompt%")
+  stop
+endif
+
+&input  = prompt(,"$$[%&prompt%[%&valid%]]", "Choose an answer")
+
+do
+  #idx = indexof(&valid[],,%&input%)
+
+  if(#idx >= 0)
+    @&result = %&input%
+    break
+  endif
+
+  &input  = prompt(,"$$[%&prompt%[%&valid%]]","'%&input%' is not a valid answer.")
+loop
+}$$
