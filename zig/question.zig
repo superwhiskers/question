@@ -4,22 +4,24 @@ const io = std.io;
 const mem = std.mem;
 const heap = std.heap;
 
+const ArrayList = std.ArrayList;
 const Allocator = mem.Allocator;
 
-fn question(comptime T: u32, prompt: []const u8, valid: []const []const u8, allocator: *Allocator) ![]const u8 {
+fn question(allocator: *Allocator, prompt: []const u8, valid: []const []const u8) ![]const u8 {
     const joined_valid = mem.join(allocator, ", ", valid);
 
     const stdout = io.getStdOut().writer();
     const stdin = io.getStdIn().reader();
 
     while (true) {
-        try stdout.print("{s}", .{prompt});
+        try stdout.print("{s}\n", .{prompt});
         if (valid.len > 0) try stdout.print("({s})", .{joined_valid});
         try stdout.print(": ", .{});
 
-        const line = try stdin.readUntilDelimiterAlloc(allocator, '\n', T);
-        const input = mem.trimRight(u8, line, "\r\n");
-        defer allocator.free(input);
+        var line = ArrayList(u8).init(allocator);
+        defer line.deinit();
+        try stdin.readUntilDelimiterArrayList(&line, '\n', std.math.maxInt(u64));
+        const input = mem.trimRight(u8, line.items, "\r");
 
         if (valid.len == 0) return input;
 
@@ -40,8 +42,5 @@ pub fn main() !void {
     defer arena_instance.deinit();
     const arena = &arena_instance.allocator;
 
-    // 512 should be plenty
-    // TODO: change the way the allocator works to not need set alloc amounts.
-    _ = try question(512, "foo", &[_][]const u8{ "bar", "baz" }, arena);
-    _ = try question(512, "foo", &[_][]const u8{}, arena);
+    _ = try question(arena, "foo", &[_][]const u8{ "bar", "baz" });
 }
