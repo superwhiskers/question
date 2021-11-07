@@ -1,0 +1,18 @@
+cargo-features = ["strip"]
+
+[package]
+name = "question-rust"
+version = "0.0.0"
+edition = "2021"
+
+[profile.release]
+opt-level = 3
+codegen-units = 1
+debug = false
+strip = "symbols"
+panic = "abort"
+lto = "fat"
+
+[[bin]]
+name = "question"
+path = "question.rs"
