@@ -1,39 +1,47 @@
+const builtin = @import("builtin");
 const std = @import("std");
+const io = std.io;
+const mem = std.mem;
+const heap = std.heap;
 
-fn question(prompt: []const u8, valid: [][]const u8) anyerror![]u8 {
+const Allocator = mem.Allocator;
+
+fn question(comptime T: u32, prompt: []const u8, valid: []const []const u8, allocator: *Allocator) ![]const u8 {
+    const joined_valid = mem.join(allocator, ", ", valid);
+
+    const stdout = io.getStdOut().writer();
+    const stdin = io.getStdIn().reader();
+
     while (true) {
-        std.debug.warn("{}", prompt);
-        if (valid.len != 0) {
-            std.debug.warn(" (");
-            for (valid) |s, i| {
-                // check if item is last in list and if so don't append a comma
-                if (i == (valid.len - 1)) {
-                    std.debug.warn("{}", s);
-                } else {
-                    std.debug.warn("{}, ", s);
-                }
-            }
-            std.debug.warn("): "); 
-        } else {
-            std.debug.warn(": ");
-        }
-        
-        var buffer = try std.Buffer.init(std.debug.global_allocator, "");
-        var input = try std.io.readLine(&buffer);
+        try stdout.print("{s}", .{prompt});
+        if (valid.len > 0) try stdout.print("({s})", .{joined_valid});
+        try stdout.print(": ", .{});
 
-        if (valid.len == 0) { return input; }
+        const line = try stdin.readUntilDelimiterAlloc(allocator, '\n', T);
+        const input = mem.trimRight(u8, line, "\r\n");
+        defer allocator.free(input);
 
-        for (valid) |ele, i| {
-            if (std.mem.eql(u8, ele, input)) {
+        if (valid.len == 0) return input;
+
+        for (valid) |elem, i| {
+            if (mem.eql(u8, elem, input)) {
                 return input;
             }
         }
 
-        std.debug.warn("\"{}\" is not a valid answer\n", input);
+        try stdout.print("\"{s}\" is not a valid answer\n", .{input});
     }
+
+    return "";
 }
 
-pub fn main() anyerror!void {
-    var valid = [][]const u8{"bar", "baz"};
-    const _ = try question("foo", valid[0..]);
+pub fn main() !void {
+    var arena_instance = heap.ArenaAllocator.init(heap.page_allocator);
+    defer arena_instance.deinit();
+    const arena = &arena_instance.allocator;
+
+    // 512 should be plenty
+    // TODO: change the way the allacator works to not need set alloc amounts.
+    _ = try question(512, "foo", &[_][]const u8{ "bar", "baz" }, arena);
+    _ = try question(512, "foo", &[_][]const u8{}, arena);
 }
