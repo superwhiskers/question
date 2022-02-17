@@ -23,6 +23,8 @@ BRK
 @question-on-line ( -> )
   #0000 ;question-buffer-ptr LDA2 STA2
 
+  ;question-buffer ;whitespace-trim JSR2
+
   LIT2r 0000 STH2
 
   &loop
@@ -46,7 +48,7 @@ BRK
   ;question-buffer ;print JSR2  
   LIT '" EMIT
   LIT 20 EMIT
-  ;invalid-str ;print JSR2
+  ;question-invalid-str ;print JSR2
   LIT 0a EMIT
   
   ( reset pointer )
@@ -88,4 +90,4 @@ JMP2r
   STH2r
 JMP2r
 
-@invalid-str "is 20 "not 20 "a 20 "valid 20 "answer $1
+@question-invalid-str "is 20 "not 20 "a 20 "valid 20 "answer $1
