@@ -2,6 +2,7 @@ std := import('std')
 str := import('str')
 fmt := import('fmt')
 
+// implementation of the question function in oak
 fn question(prompt, valid) {
 	joined_prompt := if valid {
 		? -> prompt + ': '
