@@ -9,7 +9,8 @@
       inherit self inputs;
 
       outputsBuilder = channels:
-        let pkgs = channels.nixpkgs; in rec {
+        let pkgs = channels.nixpkgs; in
+        rec {
           packages = {
             oak =
               let
@@ -31,37 +32,38 @@
               };
           };
 
-          defaultApp = let name = "question-oak-thesphist"; in pkgs.stdenv.mkDerivation {
-            name = name;
-
-            src = builtins.path {
-              path = ./.;
+          defaultApp = let name = "question-oak-thesphist"; in
+            pkgs.stdenv.mkDerivation {
               name = name;
-            };
 
-            nativeBuildInputs = [
-              packages.oak
-              pkgs.makeWrapper
-            ];
+              src = builtins.path {
+                path = ./.;
+                name = name;
+              };
 
-            buildPhase = ''
-              runHook preBuild
+              nativeBuildInputs = [
+                packages.oak
+                pkgs.makeWrapper
+              ];
 
-              oak build --entry question.oak --output bundle.oak
+              buildPhase = ''
+                runHook preBuild
 
-              runHook postBuild
-            '';
+                oak build --entry question.oak --output bundle.oak
 
-            installPhase = ''
-              runHook preInstall
+                runHook postBuild
+              '';
+
+              installPhase = ''
+                runHook preInstall
                 
-              mkdir -p $out/bin
-              cp ./bundle.oak $out/bin/${name}.oak
-              makeWrapper ${packages.oak}/bin/oak $out/bin/${name} --add-flags $out/bin/${name}.oak
+                mkdir -p $out/bin
+                cp ./bundle.oak $out/bin/${name}.oak
+                makeWrapper ${packages.oak}/bin/oak $out/bin/${name} --add-flags $out/bin/${name}.oak
               
-              runHook postInstall
-            '';
-          };
+                runHook postInstall
+              '';
+            };
 
           devShell = pkgs.mkShell {
             name = "devshell";
