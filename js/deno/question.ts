@@ -1,21 +1,11 @@
-import { readLines } from "https://deno.land/std@0.90.0/io/mod.ts";
-
-const writeLine = (...str: string[]) =>
-  Deno.stdout.write(new TextEncoder().encode(str.join("")));
-
 // implementation of the question function in deno
-async function question(prompt: string, valid: string[]) {
-  const displayPrompt = () =>
-    writeLine(prompt, valid.length !== 0 ? `(${valid.join(", ")})` : "", ": ");
+async function question(prompt: string, valid?: string[]) {
+  const joinedPrompt = valid ? `${prompt}(${valid.join(", ")}):` : `${prompt}:`;
 
-  displayPrompt();
-  for await (const input of readLines(Deno.stdin)) {
-    if (valid.length === 0 || valid.includes(input.trim())) {
-      return input.trim();
-    } else {
-      console.log(`"${input.trim()}" is not a valid answer`);
-      displayPrompt();
-    }
+  while (true) {
+    const input = globalThis.prompt(joinedPrompt)?.trim() ?? "";
+    if (valid?.includes(input) ?? true) return input;
+    console.log(`"${input}" is not a valid answer`);
   }
 }
 
