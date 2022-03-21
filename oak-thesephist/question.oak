@@ -1,0 +1,24 @@
+std := import('std')
+str := import('str')
+fmt := import('fmt')
+
+// implementation of the question function in oak
+fn question(prompt, valid) {
+	joined_prompt := if valid {
+		? -> prompt + ': '
+		_ -> fmt.format('{{0}}({{1}}): ', prompt, valid |> str.join(', '))
+	}
+
+	std.print(joined_prompt)
+	value := input().data |> str.trim()
+
+	if [valid, true] {
+		[?, _], [_, std.contains?(valid, value)] -> value
+		_ -> {
+			fmt.printf('"{{0}}" is not a valid answer', value)
+			question(prompt, valid)
+		}
+	}
+}
+
+question('foo', ['bar', 'baz'])
