@@ -1,0 +1,93 @@
+(
+  question library
+  requires EMIT, Console, and string utils to be defined/included.
+)
+
+@question-buffer $64   ( question-buffer to read user input )
+@question-buffer-ptr :question-buffer  ( next byte to write in question-buffer )
+
+( Implementation of the question function in uxntal )
+( it should be noted that while this implements question as a reusable function, a more idiomatic way would be to "hardcode" most of this suited to your needs )
+@question ( prompt-addr* 00 00 ...valid-addr* -- found-addr* )
+  ;question-print-full-prompt JSR2
+  ;question-on-stdin .Console/vector DEO2
+BRK
+@question-on-stdin
+	[ .Console/read DEI ] #0a EQU ,question-on-line JCN
+
+  ( get input and store it at question-buffer-ptr, increment question-buffer-ptr )
+  [ .Console/read DEI ] ;question-buffer-ptr LDA2 STA
+                        ;question-buffer-ptr LDA2k INC2 SWP2 STA2
+BRK
+
+@question-on-line ( -> )
+  #0000 ;question-buffer-ptr LDA2 STA2
+
+  ;question-buffer ;whitespace-trim JSR2
+
+  LIT2r 0000 STH2
+
+  &loop
+    DUP2 #0000 EQU2 ,&restore JCN
+    STH2k ;question-buffer ;strcmp JSR2 NIP2 NIP2
+    #0000 NEQ2 ,&loop JCN
+  ( there is a match )
+  &clean-wrk
+    #0000 NEQ2 ,&clean-wrk JCN
+  STH2r
+  &clean-rst
+    STH2r #0000 NEQ2 ,&clean-rst JCN
+  JMP2r
+  &restore
+    STH2r
+    STH2rk #0000 NEQ2 ,&restore JCN
+  POP2r
+
+  ( print "{buf}" is not a valid answer )
+  LIT '" EMIT
+  ;question-buffer ;print JSR2  
+  LIT '" EMIT
+  LIT 20 EMIT
+  ;question-invalid-str ;print JSR2
+  LIT 0a EMIT
+  
+  ( reset pointer )
+  ;question-buffer ;question-buffer-ptr STA2
+  
+  ;question-print-full-prompt JSR2
+BRK
+
+@question-print-joined
+  ( add marker to check for when restoring the working stack )
+  LIT2r 0000
+
+  ,&entry JMP ( skip first iter for join behavior )
+  &loop ( iter each valid, put it on the return stack from the working stack )
+    LIT ', EMIT
+    LIT 20 EMIT
+    &entry
+    DUP2 ;print JSR2 STH2
+    DUP2 #0000 NEQ2 ,&loop JCN
+  &restore
+    STH2r
+    STH2rk #0000 NEQ2 ,&restore JCN
+  POP2r
+JMP2r
+
+@question-print-full-prompt
+  ( print prompt )
+  [ DUP2 ;print JSR2 ] STH2
+
+  ( skip if there are no valid )
+  DUP2 #0000 EQU2 ,&no-valid JCN
+    LIT '( EMIT
+    ;question-print-joined JSR2
+    LIT ') EMIT
+  &no-valid
+  LIT ': EMIT
+  LIT 20 EMIT
+
+  STH2r
+JMP2r
+
+@question-invalid-str "is 20 "not 20 "a 20 "valid 20 "answer $1

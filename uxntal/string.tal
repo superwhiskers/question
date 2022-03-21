@@ -1,0 +1,79 @@
+@print ( addr* -- )
+	&loop
+		( send ) LDAk #18 DEO
+		( incr ) INC2
+		( loop ) LDAk ,&loop JCN
+	POP2
+  JMP2r
+
+@strcmp ( a* b* -- a-end* b-end* order nonzero if strings differ
+                OR a-end* b-end* 00    00      if strings match )
+	STH2
+	,&entry JMP
+
+	&loop ( a* a b / b* )
+	SUB ,&nomatch JCNk ( a* a-b nonzero / b* )
+	POP2 ( a* / b* )
+	INC2 INC2r
+	&entry ( a* / b* )
+	LDAk LDAkr STHr ( a* a b / b* )
+	ORAk ,&loop JCN
+
+	&nomatch ( a* a-b flag / b* )
+	STH2r SWP2 ( a* b* a-b flag )
+	JMP2r
+
+@strlen ( string-ptr* -- length* )
+	LIT2r 0000
+	,&entry JMP
+
+	&loop
+	INC2 INC2r
+	&entry
+	LDAk ,&loop JCN
+	POP2 STH2r
+	JMP2r
+
+@whitespace-start-len ( addr* -- length* )
+	LIT2r 0000
+	,&entry JMP
+
+	&loop
+	INC2 INC2r
+	&entry
+	LDAk #20 EQU ,&loop JCN
+	POP2 STH2r
+	JMP2r
+
+@whitespace-end-len ( end-addr* -- length* )
+	LIT2r 0000
+	#0001 SUB2 ( skip null ending )
+	,&entry JMP
+
+	&loop
+	#0001 SUB2 INC2r
+	&entry
+	LDAk #20 EQU ,&loop JCN
+	POP2 STH2r
+	JMP2r
+
+( not the smallest or most efficient way to do this, but it's clean enough for now )
+@whitespace-trim ( addr* -- )
+	STH2k
+
+	( set new null ending )
+	DUP2 ;whitespace-start-len JSR2 ADD2
+	DUP2 ;strlen JSR2
+	OVR2 ADD2
+	DUP2 ;whitespace-end-len JSR2
+	SUB2 #0000 SWP2 STA2
+
+	&loop ( read-addr* / write-addr* )
+	LDAk STH2rk STA
+	INC2 INC2r
+	LDAk ,&loop JCN
+
+	#0000 STH2r STA2
+	POP2
+	JMP2r
+
