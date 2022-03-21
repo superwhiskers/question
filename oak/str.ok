@@ -1,0 +1,55 @@
+// oakc std is very limited
+
+// The `is_defined` guard prevents redefining functions
+#[if(!is_defined("STR")) {
+  fn strlen(str: &char) -> num {
+      for (let i=0; str[i] != '\0'; i+=1) {}
+      return i
+  }
+
+  fn strcpy(dst: &char, src: &char) {
+      for (let i=0; src[i] != '\0'; i+=1) {
+          dst[i] = src[i];
+      }
+      dst[i] = 0;
+  }
+
+  fn strcat(dst: &char, src: &char) {
+      let offset = strlen(dst);
+      for (let i=0; src[i] != '\0'; i+=1) {
+          dst[offset+i] = src[i];
+      }
+      dst[offset+i] = 0;
+  }
+
+  fn strcmp(s1: &char, s2: &char) -> num {
+    let i1 = 0;
+    let i2 = 0;
+    while ((s1[i1] == s2[i2]) && (s1[i1] != '\0')) {
+      i1+=1;
+      i2+=1;
+    }
+    return ((s1[i1]) as num) - ((s2[i2]) as num)
+  }
+
+  fn ltrim(str: &char, ch: char) -> &char {
+    let i = 0;
+    while(str[i] == ch) {
+      i += 1
+    }
+    return str+i;
+  }
+
+  fn rtrim(str: &char, ch: char) {
+    let i = strlen(str)-1;
+    while(str[i] == ch) {
+      i -= 1;
+    }
+    str[i+1] = '\0';
+  }
+
+  fn trim(str: &char, ch: char) {
+    strcpy(str, ltrim(str, ch));
+    rtrim(str, ch);
+  }
+}]
