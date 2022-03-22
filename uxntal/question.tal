@@ -80,6 +80,7 @@ JMP2r
 
   ( skip if there are no valid )
   DUP2 #0000 EQU2 ,&no-valid JCN
+    LIT 0a EMIT
     LIT '( EMIT
     ;question-print-joined JSR2
     LIT ') EMIT
