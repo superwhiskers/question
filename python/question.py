@@ -9,12 +9,8 @@ def question(prompt, valid):
         else:
             inp = input(": ")
 
-        if len(valid) == 0:
+        if len(valid) == 0 or inp in valid:
             return inp
-
-        for ele in valid:
-            if ele == inp:
-                return inp
 
         print(f'"{inp}" is not a valid answer')
 
