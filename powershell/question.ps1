@@ -3,7 +3,7 @@ function Question ([Parameter(Mandatory)][string]$Prompt, [string[]]$Valid) {
   $Prompt = !$Valid.Length ? $Prompt : "$Prompt($($Valid -join ", "))"
 
   while ($true) {
-    $input = Read-Host($Prompt).Trim()
+    $input = (Read-Host($Prompt)).Trim()
     if((!$Valid.Length) -or ($input -in $Valid)) {
       return $input
     }
