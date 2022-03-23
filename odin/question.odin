@@ -29,7 +29,7 @@ question :: proc(prompt: string, valid: []string) -> string {
 			}
 		}
 
-		fmt.printf("\"%s\" is not a valid answer!\n", input);
+		fmt.printf("\"%s\" is not a valid answer\n", input);
 	}
 }
 
