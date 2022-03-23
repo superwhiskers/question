@@ -17,22 +17,22 @@ question :: proc(prompt: string, valid: []string) -> string {
 
 		slc := make_slice([]byte, 1024);
 		raw, _ := os.read(os.stdin, slc[:]);
-		inp := strings.trim(string(slc[:raw]), "\n");
+		input := strings.trim_space(string(slc[:raw]));
 
 		if len(valid) == 0 {
-			return inp;
+			return input;
 		}
 
 		for ele in valid {
-			if ele == inp {
-				return inp;
+			if ele == input {
+				return input;
 			}
 		}
 
-		fmt.printf("\"%s\" is not a valid answer!\n", inp);
+		fmt.printf("\"%s\" is not a valid answer!\n", input);
 	}
 }
 
 main :: proc() {
-	fmt.println(question("Foo", []string{"Bar", "Baz"}));
+	fmt.println(question("foo", []string{"bar", "baz"}));
 }
