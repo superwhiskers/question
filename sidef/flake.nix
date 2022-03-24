@@ -8,7 +8,6 @@
   outputs = inputs@{ self, nixpkgs, utils }:
     let
       name = "question-sidef";
-      nixpkgs.config.allowUnfree = true; 
     in
     utils.lib.mkFlake {
       inherit self inputs;
@@ -18,13 +17,11 @@
       outputsBuilder = channels:
         let
           pkgs = channels.nixpkgs;
-          lib = pkgs.lib;
-          buildPerlPackage = pkgs.perlPackages.buildPerlPackage;
-          fetchurl = pkgs.fetchurl;
+          inherit (pkgs) lib fetchurl;
+          inherit (pkgs.perlPackages) buildPerlPackage;
         in
         rec {
           packages = rec {
-
             AlgorithmCombinatorics = buildPerlPackage {
               pname = "Algorithm-Combinatorics";
               version = "0.27";
@@ -124,31 +121,6 @@
               };
             };
 
-            ${name} = pkgs.stdenv.mkDerivation {
-              name = name;
-
-              src = builtins.path {
-                path = ./.;
-                name = name;
-              };
-
-              nativeBuildInputs = [
-                packages.sidef
-                pkgs.makeWrapper
-              ];
-
-              installPhase = ''
-                runHook preInstall
-                
-                mkdir -p $out/bin
-                cp ./question.sf $out/bin/${name}.sf
-                makeWrapper ${packages.sidef}/bin/sidef $out/bin/${name} \
-                  --prefix PERL5LIB : "${with pkgs.perlPackages; makePerlPath [ packages.sidef ]}" \
-                  --add-flags $out/bin/${name}.sf
-
-                runHook postInstall
-              '';
-            };
           };
 
           apps = {
