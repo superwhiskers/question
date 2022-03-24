@@ -15,4 +15,5 @@ proc question[I](prompt: string, valid: array[I, string]): string =
     if input in valid: return input
     echo '"', input, '"', " is not a valid answer"
 
-discard question("foo", ["bar", "baz"])
+when isMainModule:
+  discard question("foo", ["bar", "baz"])
