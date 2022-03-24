@@ -16,7 +16,7 @@ fn question(prompt: &char, valid: &&char, valid_count: num) -> &char {
 
 	let matched_flag = -1;
 	while (matched_flag < 0) {
-		putstr(prompt);
+		putstrln(prompt);
 		if(valid_count > 0) {
 			putchar('(');
 			for i in 0..valid_count {
