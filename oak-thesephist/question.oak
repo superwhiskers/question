@@ -5,8 +5,8 @@ fmt := import('fmt')
 // implementation of the question function in oak
 fn question(prompt, valid) {
 	joined_prompt := if valid {
-		? -> prompt + ': '
-		_ -> fmt.format('{{0}}({{1}}): ', prompt, valid |> str.join(', '))
+		? -> prompt + '\n: '
+		_ -> fmt.format('{{0}}\n({{1}}): ', prompt, valid |> str.join(', '))
 	}
 
 	std.print(joined_prompt)
