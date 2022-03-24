@@ -128,10 +128,35 @@
               name = "sidef";
               drv = packages.sidef;
             };
-            ${name} = packages.${name};
+
+            ${name} = pkgs.stdenv.mkDerivation {
+              name = name;
+
+              src = builtins.path {
+                path = ./.;
+                name = name;
+              };
+
+              nativeBuildInputs = [
+                packages.sidef
+                pkgs.makeWrapper
+              ];
+
+              installPhase = ''
+                runHook preInstall
+                
+                mkdir -p $out/bin
+                cp ./question.sf $out/bin/${name}.sf
+                makeWrapper ${packages.sidef}/bin/sidef $out/bin/${name} \
+                  --prefix PERL5LIB : "${with pkgs.perlPackages; makePerlPath [ packages.sidef ]}" \
+                  --add-flags $out/bin/${name}.sf
+
+                runHook postInstall
+              '';
+            };
           };
 
-          defaltApp = apps.${name};
+          defaultApp = apps.${name};
 
           devShell = pkgs.mkShell {
             name = "devshell";
