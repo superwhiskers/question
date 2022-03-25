@@ -14,7 +14,7 @@ function question(prompt, valid)
 
 		io.flush()
 		
-		input = io.read()
+		input = io.read():match("^%s*(.-)%s*$")
 		
 		if #valid == 0 then
 			return input
