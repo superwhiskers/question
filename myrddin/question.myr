@@ -16,13 +16,13 @@ const question = { prompt : byte[:], valid : byte[:][:]
 		std.put("{}\n", prompt)
 		
 		if valid.len != 0
-			std.put("({}) ", joined_valid)
+			std.put("({})", joined_valid)
 		;;
 		std.put(": ")
 
 		match bio.readln(in)
 		| `std.Err e: std.fatal("error reading line: {}\n", e)
-		| `std.Ok ln: inp = ln
+		| `std.Ok ln: inp = std.strstrip(ln)
 		;;
 
 		if valid.len == 0
@@ -43,5 +43,5 @@ const question = { prompt : byte[:], valid : byte[:][:]
 }
 
 const main = {
-	question("Foo", ["Bar", "Baz"][:])
+	question("foo", ["bar", "baz"][:])
 }
