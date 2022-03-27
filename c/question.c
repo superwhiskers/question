@@ -38,7 +38,7 @@ char* join(char** sarr, int sarr_count, char* delim) {
 char* question(char* prompt, char** valid, int valid_count) {
   char* input = malloc(INITIAL_ARRAY_SIZE * sizeof(char));
   size_t read = 0;
-  char* joined_valid;
+  char* joined_valid = NULL;
   if (valid_count != 0) {
     joined_valid = join(valid, valid_count, ", ");
   }
@@ -74,7 +74,7 @@ char* question(char* prompt, char** valid, int valid_count) {
 
 // don't shame me for using goto here. this is the only valid use case for it
 _question_end:
-  if (joined_valid != 0) {
+  if (joined_valid != NULL) {
     free(joined_valid);
   }
   return input;
