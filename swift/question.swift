@@ -30,4 +30,4 @@ func question(prompt: String, valid: [String]) -> String {
 	}
 }
 
-print(question(prompt: "Foo", valid: ["Bar", "Baz"]))
+print(question(prompt: "foo", valid: ["bar", "baz"]))

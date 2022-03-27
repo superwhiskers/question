@@ -1,21 +1,19 @@
-from strutils import join
+import std/[strutils, strbasics, strformat, rdstdin]
 
 # implementation of the question "function" in nim
-proc question[I](prompt: string, valid: array[I, string] = []): string =
-  joined_valid = valid.join(", ")
+proc question(prompt: string): string =
+  echo prompt
+  readLineFromStdin(": ")
+
+proc question[I](prompt: string, valid: array[I, string]): string =
+  let joined_prompt = &"""({valid.join(", ")}): """
 
   while true:
     echo prompt
+    var input = readLineFromStdin(joined_prompt)
+    input.strip()
+    if input in valid: return input
+    echo '"', input, '"', " is not a valid answer"
 
-    if valid.len != 0:
-      stdout.write "(", joined_valid, ")"
-    stdout.write ":"
-
-    var input = stdin.readline
-    if input in valid or valid.len == 0:
-      return input
-    else:
-      echo '"', input, '"', " is not a valid answer"
-      continue
-
-discard question("foo", ["bar", "baz"])
+when isMainModule:
+  discard question("foo", ["bar", "baz"])

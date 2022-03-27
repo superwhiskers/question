@@ -4,7 +4,7 @@ def question prompt, valid
     puts prompt
     print "(#{valid.join ", "})" if valid.size != 0
     print ": "
-    input = gets.chomp
+    input = gets.strip
 
     if valid.empty? || valid.include?(input)
       return input

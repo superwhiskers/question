@@ -5,9 +5,9 @@ def question(prompt, valid):
 
         print(prompt)
         if len(valid) != 0:
-            inp = input(f'({", ".join(valid)}): ')
+            inp = input(f'({", ".join(valid)}): ').strip()
         else:
-            inp = input(": ")
+            inp = input(": ").strip()
 
         if len(valid) == 0 or inp in valid:
             return inp

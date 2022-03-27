@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"unicode"
 )
 
 // implementation of the question function in go
 func question(prompt string, valid []string) string {
-	var inp string
+	var input string
 	joinedValid := strings.Join(valid, ", ")
 
 	for {
@@ -21,19 +22,19 @@ func question(prompt string, valid []string) string {
 
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
-		inp = scanner.Text()
+		input = strings.TrimFunc(scanner.Text(), unicode.IsSpace)
 
 		if len(valid) == 0 {
-			return inp
+			return input
 		}
 
 		for _, ele := range valid {
-			if ele == inp {
-				return inp
+			if ele == input {
+				return input
 			}
 		}
 
-		fmt.Printf("\"%s\" is not a valid answer\n", inp)
+		fmt.Printf("\"%s\" is not a valid answer\n", input)
 	}
 }
 
