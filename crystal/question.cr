@@ -5,7 +5,7 @@ def question(prompt : String, valid : Array(String)) : String
     print "(#{valid.join(", ")})" unless valid.empty?
     print ": "
 
-    input = STDIN.gets
+    input = STDIN.gets.try &.strip
 
     if !input.nil? && (valid.empty? || valid.includes?(input))
       return input
