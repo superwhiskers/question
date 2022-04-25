@@ -10,7 +10,7 @@ type unexpected_eof = !void;
 
 fn scmp(a: const *void, b: const *void) int = {
 	let a = a: const *str, b = b: const *str;
-	return strings::strcmp(*a, *b);
+	return strings::compare(*a, *b);
 };
 
 fn question(prompt: str, valid: []str) (io::error | utf8::invalid | unexpected_eof | str) = {
