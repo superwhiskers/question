@@ -1,22 +1,24 @@
-{ pkgs
+{ self
+, pkgs
 , stdenv
-, go
+, ciao
 , ...
 }:
+
 stdenv.mkDerivation rec {
-  name = "question-go";
+  name = "question-ciao";
 
   src = builtins.path {
-    path = ../../go;
-    name = name;
+    path = ../../ciao;
+    name = self.name;
   };
 
-  nativeBuildInputs = [ go ];
+  nativeBuildInputs = [ ciao ];
 
   buildPhase = ''
     runHook preBuild
 
-    go build question.go
+    ciaoc -o $name question.pl
 
     runHook postBuild
   '';
@@ -25,7 +27,7 @@ stdenv.mkDerivation rec {
     runHook preInstall
     
     mkdir -p $out/bin
-    mv ./question $out/bin/$name
+    mv $name $out/bin/$name
 
     runHook postInstall
   '';

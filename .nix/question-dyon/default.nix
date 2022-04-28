@@ -19,8 +19,8 @@ stdenv.mkDerivation rec {
     runHook preInstall
   
     mkdir -p $out/bin
-    cp ./question.dyon $out/bin/${name}.dyon
-    makeWrapper ${dyon}/bin/dyonrun $out/bin/${name} --add-flags $out/bin/${name}.dyon
+    mv ./question.dyon $out/bin/$name.dyon
+    makeWrapper ${dyon}/bin/dyonrun $out/bin/$name --add-flags $out/bin/$name.dyon
     
     runHook postInstall
   '';

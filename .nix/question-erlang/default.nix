@@ -15,12 +15,20 @@ stdenv.mkDerivation rec {
   buildInputs = [ erlang makeWrapper ];
 
   buildPhase = ''
+    runHook preBuild
+
     erlc question.erl
+
+    runHook postBuild
   '';
 
   installPhase = ''
+    runHook preInstall
+
     mkdir -p $out/bin
-    cp ./question.beam $out/bin/${name}.beam
-    makeWrapper ${erlang}/bin/escript $out/bin/${name} --add-flags $out/bin/${name}.beam
+    mv ./question.beam $out/bin/$name.beam
+    makeWrapper ${erlang}/bin/escript $out/bin/$name --add-flags $out/bin/$name.beam
+
+    runHook postInstall
   '';
 }

@@ -15,8 +15,12 @@ pkgs.stdenv.mkDerivation rec {
   buildInputs = [ elixir makeWrapper ];
 
   installPhase = ''
+    runHook preInstall
+
     mkdir -p $out/bin
-    cp ./question.ex $out/bin/${name}.ex
-    makeWrapper ${elixir}/bin/elixir $out/bin/${name} --add-flags $out/bin/${name}.ex
+    mv ./question.ex $out/bin/$name.ex
+    makeWrapper ${elixir}/bin/elixir $out/bin/$name --add-flags $out/bin/$name.ex
+
+    runHook postInstall
   '';
 }

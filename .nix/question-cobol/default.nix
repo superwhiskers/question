@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     runHook preBuild
 
-    cobc -x question.cob -o question
+    cobc -x question.cob -o $name
 
     runHook postBuild
   '';
@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
     runHook preInstall
     
     mkdir -p $out/bin
-    cp ./question $out/bin/${name}
+    mv $name $out/bin/$name
 
     runHook postInstall
   '';
