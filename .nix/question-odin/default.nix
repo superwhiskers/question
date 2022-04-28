@@ -1,34 +1,34 @@
 { self
 , stdenv
-, oakc
+, odin
 , ...
 }:
 
 stdenv.mkDerivation rec {
-  name = "question-oakc";
+  name = "question-odin";
 
   src = builtins.path {
-    path = ../../oakc;
+    path = ../../odin;
     name = name;
   };
 
   nativeBuildInputs = [
-    oakc
+    odin
   ];
 
   buildPhase = ''
     runHook preBuild
 
-    oak c question.ok
+    odin build question.odin -out:question
 
     runHook postBuild
   '';
 
   installPhase = ''
     runHook preInstall
-    
+              
     mkdir -p $out/bin
-    cp ./main $out/bin/$name
+    mv ./question $out/bin/$name
 
     runHook postInstall
   '';
