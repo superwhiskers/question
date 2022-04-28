@@ -13,15 +13,24 @@
           overlays = [ nix-deno.overlay ];
         };
         inherit (pkgs) lib callPackage;
-        importFlakeOutputs = name: path: {
+        importFlakeOutputs = name: path: pkgs: {
           packages.${name} = callPackage path pkgs;
           shells.${name} = callPackage (path + "/shell.nix") pkgs;
         };
         flattenAttrList = lib.lists.foldr (a: b: lib.recursiveUpdate a b) { };
+        inherit (builtins) attrNames substring readDir baseNameOf;
       in
-      flattenAttrList [
+      flattenAttrList (lib.lists.flatten [
         { lib = { inherit importFlakeOutputs; }; }
-        (importFlakeOutputs "question-deno" ./.nix/question-deno)
-      ]
+
+        # importFlakeOutputs on any dirs starting with "question" in .nix/
+        (map
+          (path: importFlakeOutputs (baseNameOf path) (./.nix + "/${path}") pkgs)
+          (attrNames (lib.attrsets.filterAttrs
+            (path: type: type == "directory" && (substring 0 8 path) == "question")
+            (readDir ./.nix)
+          ))
+        )
+      ])
     );
 }
