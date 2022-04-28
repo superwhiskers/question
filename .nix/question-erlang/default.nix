@@ -1,4 +1,9 @@
-{ pkgs, stdenv, erlang, makeWrapper, ... }:
+{ pkgs
+, stdenv
+, erlang
+, makeWrapper
+, ...
+}:
 stdenv.mkDerivation rec {
   name = "question-erlang";
 
@@ -16,6 +21,6 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     cp ./question.beam $out/bin/${name}.beam
-    makeWrapper ${pkgs.erlang}/bin/escript $out/bin/${name} --add-flags $out/bin/${name}.beam
+    makeWrapper ${erlang}/bin/escript $out/bin/${name} --add-flags $out/bin/${name}.beam
   '';
 }
