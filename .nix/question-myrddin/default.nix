@@ -6,31 +6,31 @@
 }:
 
 stdenv.mkDerivation rec {
-    name = "question-myrddin";
+  name = "question-myrddin";
 
-    src = builtins.path {
-      path = ../../myrddin;
-      name = name;
-    };
+  src = builtins.path {
+    path = ../../myrddin;
+    name = name;
+  };
 
-    nativeBuildInputs = [
-      myrddin
-    ];
+  nativeBuildInputs = [
+    myrddin
+  ];
 
-    buildPhase = ''
-      runHook preBuild
+  buildPhase = ''
+    runHook preBuild
 
-      mbld -b $name question.myr
+    mbld -b $name question.myr
 
-      runHook postBuild
-    '';
+    runHook postBuild
+  '';
 
-    installPhase = ''
-      runHook preInstall
+  installPhase = ''
+    runHook preInstall
       
-      mkdir -p $out/bin
-      mv $name $out/bin/$name
+    mkdir -p $out/bin
+    mv $name $out/bin/$name
 
-      runHook postInstall
-    '';
+    runHook postInstall
+  '';
 }
