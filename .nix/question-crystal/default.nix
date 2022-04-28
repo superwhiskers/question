@@ -1,31 +1,33 @@
 { self
 , pkgs
 , stdenv
-, ciao
+, crystal
 , ...
 }:
 
 stdenv.mkDerivation rec {
-  name = "question-ciao";
+  name = "question-crystal";
 
   src = builtins.path {
-    path = ../../ciao;
-    name = self.name;
+    path = ../../crystal;
+    name = name;
   };
 
-  nativeBuildInputs = [ ciao ];
+  nativeBuildInputs = [
+    crystal
+  ];
 
   buildPhase = ''
     runHook preBuild
 
-    ciaoc -o $name question.pl
+    crystal build question.cr -o $name
 
     runHook postBuild
   '';
 
   installPhase = ''
     runHook preInstall
-    
+      
     mkdir -p $out/bin
     mv $name $out/bin/$name
 
