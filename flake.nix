@@ -34,6 +34,7 @@
         flattenAttrList = lib.lists.foldr (a: b: lib.recursiveUpdate a b) { };
 
         packages = {
+          oak = callPackage ./.nix/oak pkgs;
           dyon = callPackage ./.nix/dyon { inherit pkgs rustPlatform; };
           oakc = callPackage ./.nix/oakc { inherit pkgs rustPlatform; };
         };
