@@ -3,25 +3,47 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     nix-deno.url = "github:brecert/nix-deno";
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, nix-deno }:
+  outputs = inputs@{ self, nixpkgs, flake-utils, nix-deno, fenix }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ nix-deno.overlay ];
+          overlays = [ nix-deno.overlay overlay ];
         };
-        inherit (pkgs) lib callPackage;
+
+        rust = import fenix { inherit system; };
+
+        inherit (pkgs) lib callPackage makeRustPlatform fetchCrate;
+        inherit (builtins) attrNames substring readDir baseNameOf;
+
+        rustPlatform = makeRustPlatform {
+          inherit (rust.minimal) cargo rustc;
+        };
+        
         importFlakeOutputs = name: path: pkgs: {
           packages.${name} = callPackage path pkgs;
           shells.${name} = callPackage (path + "/shell.nix") pkgs;
         };
+
         flattenAttrList = lib.lists.foldr (a: b: lib.recursiveUpdate a b) { };
-        inherit (builtins) attrNames substring readDir baseNameOf;
+
+        packages = {
+          dyon = callPackage ./.nix/dyon { inherit pkgs rustPlatform; };
+        };
+
+        overlay = final: prev: packages;
       in
       flattenAttrList (lib.lists.flatten [
-        { lib = { inherit importFlakeOutputs; }; }
+        {
+          inherit packages;
+          lib = { inherit importFlakeOutputs; };
+        }
 
         # importFlakeOutputs on any dirs starting with "question" in .nix/
         (map
