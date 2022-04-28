@@ -35,6 +35,7 @@
 
         packages = {
           dyon = callPackage ./.nix/dyon { inherit pkgs rustPlatform; };
+          oakc = callPackage ./.nix/oakc { inherit pkgs rustPlatform; };
         };
 
         overlay = final: prev: packages;
