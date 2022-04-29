@@ -1,10 +1,4 @@
-{ self
-, pkgs
-, stdenv
-, lua
-, makeWrapper
-, ...
-}:
+{ stdenv, lua, makeWrapper, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-lua";

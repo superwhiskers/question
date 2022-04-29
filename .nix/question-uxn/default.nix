@@ -1,10 +1,4 @@
-{ self
-, stdenv
-, uxn
-, makeWrapper
-, ...
-}:
-
+{ stdenv, uxn, makeWrapper, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-uxn";

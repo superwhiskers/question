@@ -1,7 +1,4 @@
-{ self
-, nimPackages
-, ...
-}:
+{ nimPackages, ... }:
 
 nimPackages.buildNimPackage rec {
   name = "question-nim";

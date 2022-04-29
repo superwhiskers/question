@@ -1,5 +1,4 @@
-{ self
-, stdenv
+{ stdenv
 , sidef
 , makeWrapper
 , perlPackages

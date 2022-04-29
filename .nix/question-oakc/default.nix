@@ -1,8 +1,4 @@
-{ self
-, stdenv
-, oakc
-, ...
-}:
+{ stdenv, oakc, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-oakc";

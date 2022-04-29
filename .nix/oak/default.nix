@@ -1,4 +1,4 @@
-{ self
+{ lib
 , buildGoModule
 , fetchFromGitHub
 , ...
@@ -18,4 +18,10 @@ buildGoModule rec {
   vendorSha256 = "sha256-iQtb3zNa57nB6x4InVPw7FCmW7XPw5yuz0OcfASXPD8=";
 
   ldflags = [ "-s" "-w" ];
+
+  meta = with lib; {
+    description = "An expressive, simple, dynamic programming language";
+    homepage = "https://github.com/thesephist/oak";
+    license = licenses.mit;
+  };
 }

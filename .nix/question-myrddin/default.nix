@@ -1,9 +1,4 @@
-{ self
-, pkgs
-, stdenv
-, myrddin
-, ...
-}:
+{ stdenv, myrddin, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-myrddin";

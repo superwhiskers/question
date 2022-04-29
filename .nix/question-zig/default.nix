@@ -1,8 +1,4 @@
-{ self
-, stdenv
-, zig
-, ...
-}:
+{ stdenv, zig, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-zig";

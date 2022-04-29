@@ -1,9 +1,4 @@
-{ self
-, stdenv
-, oak
-, makeWrapper
-, ...
-}:
+{ stdenv, oak, makeWrapper, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-oak";

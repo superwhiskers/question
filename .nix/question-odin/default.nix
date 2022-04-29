@@ -1,8 +1,4 @@
-{ self
-, stdenv
-, odin
-, ...
-}:
+{ stdenv, odin, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-odin";

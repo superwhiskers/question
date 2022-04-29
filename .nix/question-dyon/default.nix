@@ -1,9 +1,4 @@
-{ pkgs
-, stdenv
-, dyon
-, makeWrapper
-, ...
-}:
+{ stdenv, dyon, makeWrapper, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-dyon";

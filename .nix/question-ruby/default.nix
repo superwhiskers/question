@@ -1,9 +1,4 @@
-{ self
-, stdenv
-, makeWrapper
-, ruby
-, ...
-}:
+{ stdenv, makeWrapper, ruby, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-ruby";

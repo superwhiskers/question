@@ -1,8 +1,4 @@
-{ pkgs
-, mkDenoDrv
-, writeText
-, ...
-}:
+{ mkDenoDrv, writeText, ... }:
 mkDenoDrv {
   name = "question-deno";
   src = builtins.path {

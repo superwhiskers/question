@@ -1,8 +1,4 @@
-{ pkgs
-, stdenv
-, go
-, ...
-}:
+{ stdenv, go, ... }:
 stdenv.mkDerivation rec {
   name = "question-go";
 

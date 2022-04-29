@@ -1,9 +1,4 @@
-{ self
-, pkgs
-, stdenv
-, crystal
-, ...
-}:
+{ stdenv, crystal, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-crystal";

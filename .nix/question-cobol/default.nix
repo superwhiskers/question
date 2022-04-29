@@ -1,8 +1,4 @@
-{ pkgs
-, stdenv
-, gnu-cobol
-, ...
-}:
+{ stdenv, gnu-cobol, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-cobol";

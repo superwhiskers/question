@@ -1,16 +1,11 @@
-{ self
-, pkgs
-, stdenv
-, ciao
-, ...
-}:
+{ stdenv, ciao, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-ciao";
 
   src = builtins.path {
     path = ../../ciao;
-    name = self.name;
+    name = name;
   };
 
   nativeBuildInputs = [ ciao ];

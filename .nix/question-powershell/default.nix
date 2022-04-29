@@ -1,9 +1,4 @@
-{ self
-, stdenv
-, powershell
-, makeWrapper
-, ...
-}:
+{ stdenv, powershell, makeWrapper, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-powershell";

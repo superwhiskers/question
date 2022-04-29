@@ -1,9 +1,4 @@
-{ self
-, stdenv
-, python3
-, makeWrapper
-, ...
-}:
+{ stdenv, python3, makeWrapper, ... }:
 
 stdenv.mkDerivation {
   name = "question-python";

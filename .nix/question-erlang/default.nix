@@ -1,9 +1,4 @@
-{ pkgs
-, stdenv
-, erlang
-, makeWrapper
-, ...
-}:
+{ stdenv, erlang, makeWrapper, ... }:
 stdenv.mkDerivation rec {
   name = "question-erlang";
 

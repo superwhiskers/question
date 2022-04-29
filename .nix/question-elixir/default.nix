@@ -1,10 +1,5 @@
-{ pkgs
-, stdenv
-, elixir
-, makeWrapper
-, ...
-}:
-pkgs.stdenv.mkDerivation rec {
+{ stdenv, elixir, makeWrapper, ... }:
+stdenv.mkDerivation rec {
   name = "question-elixir";
 
   src = builtins.path {

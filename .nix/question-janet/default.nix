@@ -1,10 +1,4 @@
-{ self
-, pkgs
-, stdenv
-, janet
-, makeWrapper
-, ...
-}:
+{ stdenv, janet, makeWrapper, ... }:
 
 stdenv.mkDerivation rec {
   name = "question-janet";
@@ -22,6 +16,6 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     cp ./question.janet $out/bin/$name.janet
-    makeWrapper ${pkgs.janet}/bin/janet $out/bin/$name --add-flags $out/bin/$name.janet
+    makeWrapper ${janet}/bin/janet $out/bin/$name --add-flags $out/bin/$name.janet
   '';
 }
