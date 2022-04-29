@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?rev=3eb07eeafb52bcbf02ce800f032f18d666a9498d";
     flake-utils.url = "github:numtide/flake-utils";
     nix-deno.url = "github:brecert/nix-deno";
     fenix = {
@@ -35,6 +35,8 @@
         };
 
         overlay = final: prev: ({
+          inherit rustPlatform;
+
           # update uxn
           uxn = prev.uxn.overrideAttrs (old: {
             version = "85a6d348ba93186eaa328f67c625fea1bacae1f4";
