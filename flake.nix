@@ -78,7 +78,7 @@
           packages = mkPackages pkgs;
 
           lib = {
-            inherit importFlakeOutputs flattenAttrList;
+            inherit mkPackages importFlakeOutputs flattenAttrList;
           };
         }
 
