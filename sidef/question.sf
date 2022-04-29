@@ -1,0 +1,11 @@
+# question implementation in sidef
+func question(prompt) {
+  Sys.readln("#{prompt}: ").trim!
+}
+
+func question(prompt, valid) {
+  var input = Sys.readln("#{prompt}\n(#{valid.join(', ')}): ").trim!
+  input ~~ valid ? input : do { say %("#{input}" is not a valid response.) __FUNC__(prompt, valid) }
+}
+
+question("foo", <bar baz>)
