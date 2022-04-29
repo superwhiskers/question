@@ -1,20 +1,20 @@
 { self
 , stdenv
 , makeWrapper
-, rakudo
+, ruby
 , ...
 }:
 
 stdenv.mkDerivation rec {
-  name = "question-raku";
+  name = "question-ruby";
 
   src = builtins.path {
-    path = ../../raku;
+    path = ../../ruby;
     name = name;
   };
 
   buildInputs = [
-    rakudo
+    ruby
     makeWrapper
   ];
 
@@ -22,8 +22,8 @@ stdenv.mkDerivation rec {
     runHook preInstall
 
     mkdir -p $out/bin
-    mv ./question.raku $out/bin/$name.raku
-    makeWrapper ${rakudo}/bin/rakudo $out/bin/$name --add-flags $out/bin/$name.raku
+    mv ./question.rb $out/bin/$name.rb
+    makeWrapper ${ruby}/bin/ruby $out/bin/$name --add-flags $out/bin/$name.rb
 
     runHook postInstall
   '';
