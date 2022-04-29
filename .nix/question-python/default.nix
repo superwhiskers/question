@@ -1,6 +1,6 @@
 { stdenv, python3, makeWrapper, ... }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   name = "question-python";
 
   src = builtins.path {
