@@ -7,7 +7,7 @@ const heap = std.heap;
 const ArrayList = std.ArrayList;
 const Allocator = mem.Allocator;
 
-fn question(allocator: *Allocator, prompt: []const u8, valid: []const []const u8) ![]const u8 {
+fn question(allocator: Allocator, prompt: []const u8, valid: []const []const u8) ![]const u8 {
     const joined_valid = mem.join(allocator, ", ", valid);
 
     const stdout = io.getStdOut().writer();
@@ -25,7 +25,7 @@ fn question(allocator: *Allocator, prompt: []const u8, valid: []const []const u8
 
         if (valid.len == 0) return input;
 
-        for (valid) |elem, i| {
+        for (valid) |elem| {
             if (mem.eql(u8, elem, input)) {
                 return input;
             }
@@ -40,7 +40,7 @@ fn question(allocator: *Allocator, prompt: []const u8, valid: []const []const u8
 pub fn main() !void {
     var arena_instance = heap.ArenaAllocator.init(heap.page_allocator);
     defer arena_instance.deinit();
-    const arena = &arena_instance.allocator;
+    const arena = arena_instance.allocator();
 
     _ = try question(arena, "foo", &[_][]const u8{ "bar", "baz" });
 }

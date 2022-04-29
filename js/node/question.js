@@ -5,7 +5,7 @@ import { stdin as input, stdout as output } from "node:process";
 async function question(prompt, valid) {
   const rl = readline.createInterface({ input, output });
   const joinedPrompt = valid
-    ? `${prompt}(${valid.join(", ")}): `
+    ? `${prompt}\n(${valid.join(", ")}): `
     : `${prompt}: `;
 
   while (true) {
