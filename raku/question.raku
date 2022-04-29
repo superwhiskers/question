@@ -1,17 +1,15 @@
-use v6;
-
-# implementation of the question function in perl6
+# implementation of the question function in raku
 sub question(Str $prompt, @valid --> Str) {
   my Str $input;
   my Str $joined_valid = join(", ", @valid);
 
   loop {
     say $prompt;
-    
+
     if @valid {
         print "($joined_valid)";
     }
-    
+
     $input = prompt(": ").trim;
 
     if (@valid.elems == 0 || $input ~~ any @valid) {
