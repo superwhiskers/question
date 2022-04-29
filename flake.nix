@@ -15,6 +15,7 @@
         pkgs = import nixpkgs {
           inherit system;
           overlays = [ nix-deno.overlay overlay ];
+          config.allowUnfree = true;
         };
 
         rust = import fenix { inherit system; };
@@ -37,6 +38,7 @@
           oak = callPackage ./.nix/oak pkgs;
           dyon = callPackage ./.nix/dyon { inherit pkgs rustPlatform; };
           oakc = callPackage ./.nix/oakc { inherit pkgs rustPlatform; };
+          sidef = callPackage ./.nix/sidef pkgs;
         };
 
         overlay = final: prev: packages;
