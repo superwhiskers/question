@@ -65,15 +65,13 @@ char* question(char* prompt, char** valid, int valid_count) {
 
     for (int i = 0; i < valid_count; i++) {
       if (strcmp(valid[i], input) == 0) {
-        goto _question_end;
+        break;
       }
     }
 
     printf("\"%s\" is not a valid answer\n", input);
   }
 
-// don't shame me for using goto here. this is the only valid use case for it
-_question_end:
   if (joined_valid != NULL) {
     free(joined_valid);
   }
